@@ -35,4 +35,8 @@ public class AllRatingsService {
                 .filter(r -> r.getBookId() == bookId)
                 .count();
     }
+
+    public List<BookRating> getAllBookRatings() {
+        return allRatings;
+    }
 }

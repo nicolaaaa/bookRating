@@ -56,4 +56,5 @@ public class BookService {
         String[] colors = {"#5a8b5d", "#ae696f", "#c9ae92", "#5e6a58", "#A833FF", "#33FFF3", "#907350", "#5f8971", "#36563e", "#81272e", "#9e391a", "#dd9933", "#7a5c00", "#3e1407"};
         return colors[random.nextInt(colors.length)];
     }
+
 }

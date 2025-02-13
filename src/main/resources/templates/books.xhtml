@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Bookshelves</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="book.svg" sizes="any" type="image/svg+xml"/>
+
+        <script type="text/javascript" src="shelves.js"></script>
+        <script type="text/javascript" src="modal.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+
+
+    </head>
+    <body>
+
+        <div th:each="shelf : ${shelves}" th:utext="${shelf}" class="shelf"></div>
+
+        <div class="overlay"></div>
+        <div id="book-container" class="book-layer">
+            <div th:each="book, iterStat : ${books}"
+                 class="book-icon"
+                 th:data-id="${book.id}"
+                 th:data-title="${book.title}"
+                 th:data-author="${book.author}"
+                 th:data-isbn="${book.isbn}"
+                 th:data-color="${book.color}"
+                 th:style="'background-color: ' + ${book.color} + '; ' +
+                 'top: ' + ${15 + (iterStat.index / 4) * 40} + '%; ' +
+                 'left: ' + ${10 + (iterStat.index % 4) * 20} + '%;'">
+
+                <div class="book-title-box">
+                    <div class="book-title" th:text="${book.title}"></div>
+                    <div class="book-author" th:text="${book.author}"></div>
+                </div>
+
+                <div class="book-rating"  th:data-book-id="${book.id}">
+
+                    <!-- Display stars based on the rating for the book -->
+                    <div class="average-rating">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}"
+                              th:class="'fa-star '+'fa-xs'"
+                              th:classappend="${i <= bookRatings[book.id].averageRating} ? fa-solid : fa-regular"></span>
+                        <div class="rating-count" th:text="'(' + ${bookRatings[book.id].totalVotes} + ')'"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="book-modal" class="book-modal">
+            <div class="book-modal-content">
+                <!-- Left side: Book Details -->
+                <div class="book-details">
+                    <h2 id="modal-book-title"></h2>
+                    <p id="modal-book-author"></p>
+                    <p><strong>ISBN:</strong> <span id="modal-book-isbn"></span></p>
+                    <p><strong>Color:</strong> <span id="modal-book-color"></span></p>
+                    <div class="average-rating">
+                        <span id="modal-average-rating"></span>
+                        <span id="modal-votes-count"></span>
+                    </div>
+                </div>
+
+                <!-- Right side: Rating -->
+                <div class="modal-rating">
+                    <div id="rating-stars" class="stars"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
