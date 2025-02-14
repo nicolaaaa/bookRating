@@ -8,10 +8,13 @@ public class BookRatingInfo {
 
     private double averageRating;
     private int totalVotes;
+    private int userRating;
 
-    public BookRatingInfo(double averageRating, int totalVotes) {
+    public BookRatingInfo(double averageRating, int totalVotes, int userRating) {
         this.averageRating = averageRating;
         this.totalVotes = totalVotes;
+        this.userRating = userRating;
+
     }
 
     public double getAverageRating() {
@@ -20,5 +23,14 @@ public class BookRatingInfo {
 
     public int getTotalVotes() {
         return totalVotes;
+    }
+
+    public int getUserRating() {
+        return userRating;
+    }
+
+    @Override
+    public String toString() {
+        return "BookRatingInfo{" + "averageRating=" + averageRating + ", totalVotes=" + totalVotes + ", userRating=" + userRating + '}';
     }
 }

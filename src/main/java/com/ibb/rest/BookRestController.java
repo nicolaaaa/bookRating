@@ -7,6 +7,8 @@ package com.ibb.rest;
 import com.ibb.model.Book;
 import com.ibb.service.BookService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookRestController {
 
+    private static final Logger LOG = Logger.getLogger(BookRestController.class.getName());
     private final BookService bookService;
 
     public BookRestController(BookService bookService) {
@@ -21,7 +24,11 @@ public class BookRestController {
     }
 
     @GetMapping("/api/random-books")
-    public List<Book> getRandomBooks(@RequestParam(defaultValue = "5") int count) {
-        return bookService.generateRandomBooks(count);
+    public List<Book> getRandomBooks(
+            @RequestParam(required = false, defaultValue = "4") int count,
+            @RequestParam(required = false, defaultValue = "0") int index) {
+        int toIndex = index + count;
+        LOG.log(Level.INFO, "Get Books between " + index + " - " + toIndex);
+        return bookService.getBooks(count, index);
     }
 }

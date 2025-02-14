@@ -6,12 +6,14 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @SessionScope // Only stores ratings for the current session
 public class RatingService {
 
     private final List<BookRating> userRatings = new ArrayList<>();
+    private static final Logger LOG = Logger.getLogger(RatingService.class.getName());
 
     // Add a rating (Session-based)
     public void addRating(BookRating rating) {
@@ -26,6 +28,6 @@ public class RatingService {
                 .filter(r -> r.getBookId() == bookId)
                 .map(BookRating::getRating)
                 .findFirst()
-                .orElse(null); // Return null if no rating exists
+                .orElse(0); // Return null if no rating exists
     }
 }

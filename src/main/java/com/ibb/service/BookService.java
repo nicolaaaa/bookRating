@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class BookService {
@@ -19,9 +21,20 @@ public class BookService {
     private final Random random = new Random();
     private int bookIdCounter = 1;
     private final AllRatingsService ratingService;
+    private final List<Book> booksList = new ArrayList<>();
+    private static final Logger LOG = Logger.getLogger(BookService.class.getName());
 
     public BookService(AllRatingsService ratingService) {
         this.ratingService = ratingService;
+    }
+
+    public List<Book> getBooks(int count, int index) {
+        int toIndex = index + count;
+        if (toIndex >= booksList.size()) {
+            LOG.log(Level.INFO, "Bookslist empty -> generate random books");
+            booksList.addAll(generateRandomBooks(count));
+        }
+        return booksList.subList(index, toIndex);
     }
 
     public Book generateRandomBook() {
@@ -29,9 +42,10 @@ public class BookService {
                 bookIdCounter++,
                 faker.book().title(),
                 faker.book().author(),
-                random.nextInt(999999999), // Random ISBN-like number
+                random.nextInt(999999999),
                 getRandomColor()
         );
+        LOG.log(Level.INFO, "-> generate random ratings for books");
         generateRandomRatingsForBook(book.getId());
         return book;
     }
@@ -45,9 +59,9 @@ public class BookService {
     }
 
     private void generateRandomRatingsForBook(int bookId) {
-        int numberOfRatings = random.nextInt(51); // Generate between 0 and 50 ratings
+        int numberOfRatings = random.nextInt(21);
         for (int i = 0; i < numberOfRatings; i++) {
-            int rating = random.nextInt(5) + 1; // Generate a rating between 1 and 5
+            int rating = random.nextInt(5) + 1;
             ratingService.addRating(new BookRating(bookId, rating, "test"));
         }
     }

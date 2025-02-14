@@ -21,6 +21,7 @@
         <div id="book-container" class="book-layer">
             <div th:each="book, iterStat : ${books}"
                  class="book-icon"
+                 th:classappend="${bookRatings[book.id].userRating > 0} ? 'rated-book' : ''"
                  th:data-id="${book.id}"
                  th:data-title="${book.title}"
                  th:data-author="${book.author}"

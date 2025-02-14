@@ -1,4 +1,4 @@
-package com.ibb.ctrl;
+package com.ibb.rest;
 
 import com.ibb.model.BookRating;
 import com.ibb.service.AllRatingsService;
@@ -11,12 +11,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class RatingController {
+public class RatingRestController {
 
     private final AllRatingsService allRatingsService;
     private final RatingService userRatingService;
 
-    public RatingController(AllRatingsService allRatingsService, RatingService userRatingService) {
+    public RatingRestController(AllRatingsService allRatingsService, RatingService userRatingService) {
         this.allRatingsService = allRatingsService;
         this.userRatingService = userRatingService;
     }

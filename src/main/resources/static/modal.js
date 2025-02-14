@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.book-icon').forEach((book) => {
-
         addModal(book);
     });
 });
-function addModal(book) {
 
+function addModal(book) {
     book.addEventListener('click', () => {
         document.getElementById('modal-book-title').textContent = book.dataset.title;
         document.getElementById('modal-book-author').textContent = `Author: ${ book.dataset.author}`;
@@ -60,57 +59,20 @@ function fetchRatingsAndDisplayInModal(bookId) {
             .catch(error => console.error("Error fetching ratings:", error));
 }
 
-function submitBookRating(bookId, rating) {
-    const sessionId = "test"; // Replace with dynamic session ID if needed
-
-    const ratingData = {
-        bookId: bookId,
-        rating: rating,
-        sessionId: sessionId
-    };
-    // Send rating to the backend (POST request)
-    fetch('/api/rate-book', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ratingData)
-    })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Rating submitted successfully:", data);
-                closeModal();
-                // Fetch and update the rating and votes count for this book
-                updateBookRating(data, bookId);
-            })
-            .catch(error => {
-                console.error("Error submitting rating:", error);
-            });
-}
-
-function closeModal() {
-    document.getElementById('book-modal').style.display = 'none';
-}
-
-
 
 function updateBookRating(data, bookId) {
-
-// Find the specific book element by its data-book-id attribute
     const bookElement = document.querySelector(`[data-book-id='${bookId}']`);
     console.log(bookElement);
     if (bookElement) {
         const avgRatingDiv = bookElement.querySelector(".average-rating");
-        avgRatingDiv.innerHTML = ""; // Clear old stars
+        avgRatingDiv.innerHTML = "";
 
-        // Update the stars based on the new average rating
         for (let i = 1; i <= 5; i++) {
             const star = document.createElement("i");
             star.classList.add("fa-star", "fa-xs", i <= Math.round(data.averageRating) ? "fa-solid" : "fa-regular");
             avgRatingDiv.appendChild(star);
         }
 
-// Update the vote count next to the stars
         avgRatingDiv.innerHTML += `<span class="rating-count">(${data.votesCount})</span>`;
         console.log(bookElement);
         const book = document.querySelector(`[data-id='${bookId}']`);
@@ -120,33 +82,18 @@ function updateBookRating(data, bookId) {
     }
 }
 
-
+//Functions for adding books while scrolling
 let bookIndex = 8;
 async function fetchBooks() {
 
-    return fetch("/api/random-books?count=8")
+    return fetch(`/api/random-books?count=4&index=${bookIndex}`)
             .then(response => response.json())
             .then(books => {
                 const container = document.getElementById("book-container");
                 books.forEach((book) => {
                     const bookElement = createBookElement(book, bookIndex);
                     container.appendChild(bookElement);
-                    console.log(bookElement);
                     addModal(bookElement);
-//                    let bookId = bookElement.getAttribute("data-id");
-//                    let title = bookElement.getAttribute("data-title");
-//                    let author = bookElement.getAttribute("data-author");
-//                    let isbn = bookElement.getAttribute("data-isbn");
-//                    let color = bookElement.getAttribute("data-color");
-//                    bookElement.addEventListener('click', () => {
-//                        // Populate modal
-//                        document.getElementById('modal-book-title').textContent = title;
-//                        document.getElementById('modal-book-author').textContent = `Author: ${author}`;
-//                        document.getElementById('modal-book-isbn').textContent = isbn;
-//                        document.getElementById('modal-book-color').textContent = color;
-//                        fetchRatingsAndDisplayInModal(bookId);
-//                        document.getElementById('book-modal').style.display = 'flex';
-//                    });
                     bookIndex += 1;
                 });
                 // Close modal when clicking outside the content
@@ -197,11 +144,11 @@ function createBookElement(book, index) {
     bookDiv.dataset.color = book.author;
     bookDiv.dataset.isbn = book.isbn;
     // Fetch and update ratings
-    fetchRatingsAndUpdateRatingDisplay(book.id, avgRatingDiv, rateBookDiv);
+    fetchRatingsAndUpdateRatingDisplay(book.id, avgRatingDiv, bookDiv);
     return bookDiv;
 }
 
-function fetchRatingsAndUpdateRatingDisplay(bookId, avgRatingDiv) {
+function fetchRatingsAndUpdateRatingDisplay(bookId, avgRatingDiv, bookDiv) {
     fetch(`/api/book-ratings/${bookId}`)
             .then(response => response.json())
             .then(data => {
@@ -213,6 +160,10 @@ function fetchRatingsAndUpdateRatingDisplay(bookId, avgRatingDiv) {
                     avgRatingDiv.appendChild(star);
                 }
                 avgRatingDiv.innerHTML += `<span class="rating-count">(${data.votesCount})</span>`;
+                if (data.userRating > 0) {
+                    bookDiv.classList.add("rated-book");
+
+                }
             })
             .catch(error => console.error("Error fetching ratings:", error));
 }
