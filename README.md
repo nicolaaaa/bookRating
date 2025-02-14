@@ -1,8 +1,8 @@
 # Book Rating Site with Spring Boot
 
 <p align="center">
-  <img src="screenshot_1.png" alt="Screenshot of the Site" width="40%">
-  <img src="screenshot_2.png" alt="Screenshot of Rating" width="40%">
+  <img src="Screenshot-1.png" alt="Screenshot of the Site" width="40%">
+  <img src="Screenshot-2.png" alt="Screenshot of Rating" width="40%">
 </p>
 
 
