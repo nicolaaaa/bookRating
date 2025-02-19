@@ -62,13 +62,17 @@ public class BookService {
         int numberOfRatings = random.nextInt(21);
         for (int i = 0; i < numberOfRatings; i++) {
             int rating = random.nextInt(5) + 1;
-            ratingService.addRating(new BookRating(bookId, rating, "test"));
+            ratingService.addRating(new BookRating(bookId, rating));
         }
     }
 
     private String getRandomColor() {
         String[] colors = {"#5a8b5d", "#ae696f", "#c9ae92", "#5e6a58", "#A833FF", "#33FFF3", "#907350", "#5f8971", "#36563e", "#81272e", "#9e391a", "#dd9933", "#7a5c00", "#3e1407"};
         return colors[random.nextInt(colors.length)];
+    }
+
+    public List<Book> getBooksList() {
+        return booksList;
     }
 
 }

@@ -9,6 +9,7 @@ import com.ibb.service.BookService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class BookRestController {
     private static final Logger LOG = Logger.getLogger(BookRestController.class.getName());
     private final BookService bookService;
 
+    @Autowired
     public BookRestController(BookService bookService) {
         this.bookService = bookService;
     }

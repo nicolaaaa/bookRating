@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,10 @@ public class WebController {
     private static final Logger LOG = Logger.getLogger(WebController.class.getName());
 
     private final BookService bookService;
-    private AllRatingsService allRatingService;
-    private RatingService userRatingService;
+    private final AllRatingsService allRatingService;
+    private final RatingService userRatingService;
 
+    @Autowired
     public WebController(BookService bookService, AllRatingsService allRatingService, RatingService userRatingService) {
         this.bookService = bookService;
         this.allRatingService = allRatingService;

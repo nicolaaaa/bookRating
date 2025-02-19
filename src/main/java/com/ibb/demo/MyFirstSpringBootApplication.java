@@ -11,10 +11,6 @@ public class MyFirstSpringBootApplication {
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(MyFirstSpringBootApplication.class, args);
-
-//                          for(String str:ctx.getBeanDefinitionNames() ){
-//                              System.out.println(""+str);
-//                          }
     }
 
 }

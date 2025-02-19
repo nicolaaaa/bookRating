@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/api")
@@ -16,6 +17,7 @@ public class RatingRestController {
     private final AllRatingsService allRatingsService;
     private final RatingService userRatingService;
 
+    @Autowired
     public RatingRestController(AllRatingsService allRatingsService, RatingService userRatingService) {
         this.allRatingsService = allRatingsService;
         this.userRatingService = userRatingService;
@@ -23,10 +25,9 @@ public class RatingRestController {
 
     @PostMapping("/rate-book")
     public Map<String, Object> rateBook(@RequestBody RatingRequest request, HttpSession session) {
-        String sessionId = session.getId(); // Get session ID
 
         // Create rating object
-        BookRating rating = new BookRating(request.getBookId(), request.getRating(), sessionId);
+        BookRating rating = new BookRating(request.getBookId(), request.getRating());
 
         // Store in both global and session-based services
         allRatingsService.addRating(rating);

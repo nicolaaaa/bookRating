@@ -19,5 +19,4 @@ public class BookRating {
 
     private int bookId;
     private int rating;
-    private String sessionId;
 }
